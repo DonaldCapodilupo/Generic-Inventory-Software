@@ -7,7 +7,7 @@
 <body>
     <div class="main_Wrapper">
         <div class="company_Logo">
-            <img src="../static/Company Logo.png" alt="Flowers in Chania">
+            <img src="../static/Company Logo.png" alt="Generic Demolition Company!">
         </div>
 
         <form action="{{ url_for('login_Screen') }}" method="POST">
@@ -22,12 +22,18 @@
             <div class="password_Entry_Field">
 
                 <label for="password">Password:</label>
-                <input type="text" id="password" name="password"><br><br>
+                <input type="password" id="password" name="password"><br><br>
             </div>
 
 
 
             <button type="submit" value="submit">Submit</button>
+
+            {% if error: %}
+                <div class="error_Message">
+                <h3>Sorry! Invalid Data Entered</h3>
+                </div>
+            {% endif %}
 
         </form>
     </div>
