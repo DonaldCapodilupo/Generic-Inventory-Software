@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Main Menu</title>
+    <link rel="stylesheet" href="../static/main.css">
 </head>
 <body>
 <div class="main_Wrapper">
@@ -10,26 +11,31 @@
         <img src="../static/Company Logo.png" alt="Generic Demolition Company!">
     </div>
     <form action="{{ url_for('main_Screen') }}" method="POST">
+        <div class="inventory_Buttons">
+            <div class=add_Inventory_Item_Wrapper">
+                <button type="submit" name="submit_button" value="Add Inventory Item">Add Inventory</button>
+            </div>
+            <div class=remove_Inventory_Item">
+                <button type="submit" name="submit_button" value="Remove Inventory Item">Remove Inventory</button>
+            </div>
+        </div>
+        <div class="job_Buttons_Wrapper">
+            <div class=item_Inventory_To_Job">
+                <button type="submit" name="submit_button" value="Send Item To Job">Send Item To Job</button>
+            </div>
+            <div class=item_From_Job_To_Inventory">
+                <button type="submit" name="submit_button" value="Return Item From Job">Return Item From Job</button>
+            </div>
+        </div>
 
-        <div class=add_Inventory_Item">
-            <button type="submit" value="add_Inventory_Item">Add Inventory</button>
-        </div>
-        <div class=remove_Inventory_Item">
-            <button type="submit" value="remove_Inventory_Item">Remove Inventory</button>
-        </div>
-        <div class=item_Inventory_To_Job">
-            <button type="submit" value="job_Out_Item">Send Item To Job</button>
-        </div>
-        <div class=item_From_Job_To_Inventory">
-            <button type="submit" value="job_In_Item">Return Item From Job</button>
-        </div>
+        <div class="more_Information_Wrapper">
+            <div class=Reports_Button">
+                <button type="submit" name="submit_button" value="Get Reports">View Reports</button>
+            </div>
 
-        <div class=Reports_Button">
-            <button type="submit" value="get_reports">View Reports</button>
-        </div>
-
-        <div class=Letters_Button">
-            <button type="submit" value="get_Letters">View Letters</button>
+            <div class=Letters_Button">
+                <button type="submit" name="submit_button" value="View Letters">View Letters</button>
+            </div>
         </div>
 
 
