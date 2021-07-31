@@ -9,4 +9,6 @@ def login_Screen():
 
 
 if __name__ == '__main__':
+    from backend import programSetup
+    programSetup()
     app.run()
