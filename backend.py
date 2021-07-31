@@ -40,9 +40,22 @@ def programSetup():
             print("Inventory.db already exists.")
 
 
-
-
     create_User_Database()
     create_Tool_Database()
 
     os.chdir('..')
+
+
+def get_Current_User_Database_Information():
+    import os
+    import sqlite3
+    os.chdir("Databases")
+
+    returnDict = {}
+
+    conn = sqlite3.connect("Users.db")
+    c = conn.cursor()
+    for row in c.execute("SELECT * FROM Userlist ORDER BY Date"):
+            returnDict[row[2]] = row[3]
+    os.chdir('..')
+    return  returnDict
