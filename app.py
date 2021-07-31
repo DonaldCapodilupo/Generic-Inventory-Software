@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect,url_for
 
 app = Flask(__name__)
 
@@ -14,12 +14,22 @@ def login_Screen():
 
         for user, pwrd in valid_Users.items():
             if user == username and password == pwrd:
-                return render_template("main.html")
-        return render_template("login.html")
+                return redirect(url_for("main_Screen"))
+        return render_template("login.html" ,error = True)
 
 
     else:
         return render_template("login.html")
+
+
+
+@app.route('/main', methods=["POST","GET"])
+def main_Screen():
+    if request.method == 'POST':
+        pass
+
+    else:
+        return render_template("main.html")
 
 
 if __name__ == '__main__':
