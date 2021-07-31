@@ -4,7 +4,7 @@ body{
 
 .main_Wrapper{
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
 }
 
 .company_Logo{
@@ -12,6 +12,8 @@ body{
 }
 
 form{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     justify-self: center;
 }
 
