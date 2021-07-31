@@ -10,25 +10,26 @@
             <img src="../static/Company Logo.png" alt="Flowers in Chania">
         </div>
 
-        <div class=username_Entry_Field">
+        <form action="{{ url_for('login_Screen') }}" method="POST">
 
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username"><br><br>
+            <div class=username_Entry_Field">
 
-        </div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username"><br><br>
 
-        <div class="password_Entry_Field">
+            </div>
 
-            <label for="password">Password:</label>
-            <input type="text" id="password" name="password"><br><br>
+            <div class="password_Entry_Field">
 
-        </div>
+                <label for="password">Password:</label>
+                <input type="text" id="password" name="password"><br><br>
+            </div>
 
-        <div class="Button_Wrapper">
-                <input type="Submit" name="submit_Button" value="Submit">
-        </div>
+
+
+            <button type="submit" value="submit">Submit</button>
+
+        </form>
     </div>
-
-
 </body>
 </html>
