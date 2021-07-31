@@ -26,10 +26,23 @@ def login_Screen():
 @app.route('/main', methods=["POST","GET"])
 def main_Screen():
     if request.method == 'POST':
-        pass
+        if request.form['submit_button'] == 'Add Inventory Item':
+            return redirect(url_for('add_Inventory_Item'))
 
     else:
         return render_template("main.html")
+
+
+@app.route('/Add_Inventory_Item', methods=["POST","GET"])
+def add_Inventory_Item():
+    if request.method == 'POST':
+        pass
+
+    else:
+        return render_template("add_Inventory.html")
+
+
+
 
 
 if __name__ == '__main__':
