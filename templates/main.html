@@ -5,6 +5,36 @@
     <title>Title</title>
 </head>
 <body>
-Hello World
+<div class="main_Wrapper">
+    <div class="company_Logo">
+        <img src="../static/Company Logo.png" alt="Generic Demolition Company!">
+    </div>
+    <form action="{{ url_for('main_Screen') }}" method="POST">
+
+        <div class=add_Inventory_Item">
+            <button type="submit" value="add_Inventory_Item">Add Inventory</button>
+        </div>
+        <div class=remove_Inventory_Item">
+            <button type="submit" value="remove_Inventory_Item">Remove Inventory</button>
+        </div>
+        <div class=item_Inventory_To_Job">
+            <button type="submit" value="job_Out_Item">Send Item To Job</button>
+        </div>
+        <div class=item_From_Job_To_Inventory">
+            <button type="submit" value="job_In_Item">Return Item From Job</button>
+        </div>
+
+        <div class=Reports_Button">
+            <button type="submit" value="get_reports">View Reports</button>
+        </div>
+
+        <div class=Letters_Button">
+            <button type="submit" value="get_Letters">View Letters</button>
+        </div>
+
+
+    </form>
+
+</div>
 </body>
 </html>
