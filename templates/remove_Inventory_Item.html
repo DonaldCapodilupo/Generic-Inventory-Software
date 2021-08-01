@@ -9,13 +9,31 @@
 <div class="main_Wrapper">
     <div class="company_Logo">
         <img src="../static/Company Logo.png" alt="Generic Demolition Company!">
-        <h1>Coming Soon!</h1>
     </div>
     <form action="{{ url_for('remove_Inventory_Item') }}" method="POST">
-
-        <div class="">
-                <button type="submit" name="submit_button" value="Go Back">Go Back</button>
-            </div>
+        <table>
+            <caption>Select Item(s) to Remove</caption>
+            <tbody>
+            <tr>
+                <th scope="col">Tool</th>
+                <th scope="col">Date Added</th>
+                <th scope="col">Stock ID</th>
+                <th scope="col">Uploaded By</th>
+            </tr>
+            {% for tool, tuple_Of_Information in inventory_Data.items(): %}
+                <tr>
+                    <th scope="row">{{ tool }}</th>
+                    <td><code>{{ tuple_Of_Information[0] }}</code></td>
+                    <td><code>{{ tuple_Of_Information[1] }}</code></td>
+                    <td><code>{{ tuple_Of_Information[2] }}</code></td>
+                    <td><input type="checkbox" name="checkbox" value="{{ tuple_Of_Information[1] }}"></td>
+                </tr>
+            {% endfor %}
+        </table>
+        <div class="button_Wrapper">
+            <button type="submit" name="submit_button" value="Remove Item">Remove Item</button>
+            <button type="submit" name="submit_button" value="Go Back">Go Back</button>
+        </div>
     </form>
 
 </div>

@@ -65,6 +65,21 @@ def get_Current_User_Database_Information():
     return  returnDict
 
 
+def get_Current_Inventory_Database_Information():
+    import os
+    import sqlite3
+    os.chdir("Databases")
+
+    returnDict = {}
+
+    conn = sqlite3.connect("Inventory.db")
+    c = conn.cursor()
+    for row in c.execute("SELECT * FROM Inventory ORDER BY Date"):
+            returnDict[row[2]] = (row[1],row[4],row[7])
+    os.chdir('..')
+    return  returnDict
+
+
 def add_Inventory_Item(user_Information_Tuple):
     import os
     import sqlite3

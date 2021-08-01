@@ -48,10 +48,6 @@ def main_Screen():
 @app.route('/Add_Inventory_Item', methods=["POST","GET"])
 def add_Inventory_Item():
     if request.method == 'POST':
-
-
-
-
         if request.form['submit_button'] == 'Add Item':
             from backend import add_Inventory_Item
             import datetime
@@ -59,20 +55,15 @@ def add_Inventory_Item():
             information_For_Inventory_DB = (today,request.form['tool_Name'], request.form['Tools'],
                                             request.form['stock_Id'], request.form['cost'], request.form['location'],
                                             "Dcapodilupo")
-
             for user_Input in information_For_Inventory_DB:
                 if user_Input:
                     pass
                 else:
                     return render_template("add_Inventory.html", error=True, data=information_For_Inventory_DB)
-
-
             add_Inventory_Item(information_For_Inventory_DB)
             return render_template("add_Inventory.html" ,success=True, data=information_For_Inventory_DB)
-
         elif request.form['submit_button'] == 'Back To Main Menu':
             return redirect(url_for('main_Screen'))
-
     else:
         return render_template("add_Inventory.html")
 
@@ -84,7 +75,8 @@ def remove_Inventory_Item():
             return redirect(url_for('main_Screen'))
 
     else:
-        return render_template("remove_Inventory_Item.html")
+        from backend import get_Current_Inventory_Database_Information
+        return render_template("remove_Inventory_Item.html",inventory_Data=get_Current_Inventory_Database_Information())
 
 @app.route('/Send_Item_To_Job', methods=["POST","GET"])
 def send_Item_To_Job():
