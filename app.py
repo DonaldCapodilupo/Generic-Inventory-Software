@@ -71,7 +71,20 @@ def add_Inventory_Item():
 @app.route('/Remove_Inventory_Item', methods=["POST","GET"])
 def remove_Inventory_Item():
     if request.method == 'POST':
-        if request.form['submit_button'] == 'Go Back':
+        if request.form['submit_button'] == 'Remove Item':
+            from backend import remove_Inventory_Item, get_Current_Inventory_Database_Information
+            if request.form.getlist('checkbox'):
+                for item in  request.form.getlist('checkbox'):
+                    remove_Inventory_Item(item)
+
+                return render_template("remove_Inventory_Item.html" ,inventory_Data=get_Current_Inventory_Database_Information(),
+                                       success=True, data= request.form.getlist('checkbox'))
+            else:
+                return render_template("remove_Inventory_Item.html",
+                                       inventory_Data=get_Current_Inventory_Database_Information(),
+                                       error=True)
+
+        elif request.form['submit_button'] == 'Go Back':
             return redirect(url_for('main_Screen'))
 
     else:

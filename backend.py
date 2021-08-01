@@ -92,3 +92,16 @@ def add_Inventory_Item(user_Information_Tuple):
     c.execute("INSERT INTO Inventory VALUES (NULL,?,?,?,?,?,?,?)",user_Information_Tuple)
     os.chdir('..')
     conn.commit()
+
+
+def remove_Inventory_Item(stock_ID):
+    import os
+    import sqlite3
+    os.chdir("Databases")
+
+    conn = sqlite3.connect("Inventory.db")
+    c = conn.cursor()
+
+    c.execute("DELETE FROM Inventory where Stock_ID = ?", [stock_ID])
+    os.chdir('..')
+    conn.commit()
