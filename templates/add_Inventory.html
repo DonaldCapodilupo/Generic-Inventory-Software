@@ -11,10 +11,71 @@
         <img src="../static/Company Logo.png" alt="Generic Demolition Company!">
     </div>
     <form action="{{ url_for('add_Inventory_Item') }}" method="POST">
-        <h1>Coming Soon!</h1>
-        <div class="">
-                <button type="submit" name="submit_button" value="Go Back">Go Back</button>
+        <div class=tool_Name">
+            <label for="tool_Name">Tool Name:</label>
+            <input type="text" name="tool_Name" value=""><br><br>
+
+        </div>
+
+        <div class=tool_Type">
+            <label for="Tools">Tool Type:</label>
+            <select name="Tools">
+                    <option name="tool_Choice" value="Hand Tool">Hand Tool</option>
+                    <option name="tool_Choice" value="Safety Equipment">Safety Equipment</option>
+                    <option name="tool_Choice" value="Electric Tool">Electric Tool</option>
+                    <option name="tool_Choice" value="Gas Tool">Gas Tool</option>
+                    <option name="tool_Choice" value="Gas Tool">Disposable Item</option>
+            </select>
+
+        </div>
+
+        <div class=stock_ID">
+            <label for="stock_Id">Stock ID:</label>
+            <input type="text" name="stock_Id" value=""><br><br>
+
+        </div>
+
+        <div class=cost">
+            <label for="cost">Cost: $</label>
+            <input type="number" min="0.00" max="10000.00" step=".01" name="cost"/><br><br>
+
+        </div>
+
+        <div class=location">
+            <label for="location">Location:</label>
+            <select name="location" id="cars">
+                <option name="location" value="A1">A1</option>
+                <option name="location" value="A2">A1</option>
+                <option name="location" value="A3">A1</option>
+                <option name="location" value="B1">B1</option>
+                <option name="location" value="B2">B2</option>
+                <option name="location" value="B3">B3</option>
+                <option name="location" value="C1">C1</option>
+                <option name="location" value="C2">C2</option>
+                <option name="location" value="C3">C3</option>
+            </select>
+
+        </div>
+
+        <div class=button_Wrapper">
+            <button type="submit" name="submit_button" value="Add Item">Add Item</button>
+            <button type="submit" name="submit_button" value="Back To Main Menu">Back To Main Menu</button>
+        </div>
+
+
+        {% if success: %}
+                <div class="success_Message">
+                <h3>Congrats! {{data[1]}} has been added</h3>
+                </div>
+        {% endif %}
+        {% if error: %}
+            <div class="success_Message">
+                <h3>Error: Please make sure all fields are filled.</h3>
             </div>
+        {% endif %}
+
+
+
     </form>
 
 </div>
