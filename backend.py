@@ -43,10 +43,35 @@ def programSetup():
         except sqlite3.OperationalError:
             print("Inventory.db already exists.")
 
+    def create_Employee_Database():
+        conn = sqlite3.connect('Employee.db')
+        c = conn.cursor()
+        try:
+            c.execute("CREATE TABLE Employees (ID INTEGER PRIMARY KEY, "
+                      "Stock_ID TEXT,"
+                      "Date_Withdrawn TEXT, "
+                      "Employee_Name TEXT,"
+                      "Date_Returned TEXT)")
+        except sqlite3.OperationalError:
+            print("Employee.db already exists.")
+
+    def create_Job_Database():
+        conn = sqlite3.connect('Jobs.db')
+        c = conn.cursor()
+        try:
+            c.execute("CREATE TABLE Jobs (ID INTEGER PRIMARY KEY, "
+                      "Date TEXT,"
+                      "Invoice_Number TEXT,"
+                      "Client_Name TEXT, "
+                      "Team_Leader TEXT)")
+        except sqlite3.OperationalError:
+            print("Employee.db already exists.")
+
 
     create_User_Database()
     create_Tool_Database()
-
+    create_Employee_Database()
+    create_Job_Database()
     os.chdir('..')
 
 
