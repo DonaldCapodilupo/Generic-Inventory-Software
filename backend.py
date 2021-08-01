@@ -33,9 +33,13 @@ def programSetup():
         c = conn.cursor()
         try:
             c.execute("CREATE TABLE Inventory (ID INTEGER PRIMARY KEY, "
-                                                  "Date TEXT, "
-                                                  "Tool TEXT,"
-                                                  "Stock_ID TEXT)")
+                      "Date TEXT, "
+                      "Tool TEXT,"
+                      "Tool_Type TEXT,"
+                      "Stock_ID TEXT,"
+                      "Cost TEXT,"
+                      "Location TEXT,"
+                      "User TEXT)")
         except sqlite3.OperationalError:
             print("Inventory.db already exists.")
 
@@ -59,3 +63,17 @@ def get_Current_User_Database_Information():
             returnDict[row[2]] = row[3]
     os.chdir('..')
     return  returnDict
+
+
+def add_Inventory_Item(user_Information_Tuple):
+    import os
+    import sqlite3
+    os.chdir("Databases")
+
+
+
+    conn = sqlite3.connect("Inventory.db")
+    c = conn.cursor()
+    c.execute("INSERT INTO Inventory VALUES (NULL,?,?,?,?,?,?,?)",user_Information_Tuple)
+    os.chdir('..')
+    conn.commit()

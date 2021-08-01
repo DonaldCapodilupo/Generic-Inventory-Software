@@ -48,7 +48,29 @@ def main_Screen():
 @app.route('/Add_Inventory_Item', methods=["POST","GET"])
 def add_Inventory_Item():
     if request.method == 'POST':
-        if request.form['submit_button'] == 'Go Back':
+
+
+
+
+        if request.form['submit_button'] == 'Add Item':
+            from backend import add_Inventory_Item
+            import datetime
+            today = str(datetime.date.today())
+            information_For_Inventory_DB = (today,request.form['tool_Name'], request.form['Tools'],
+                                            request.form['stock_Id'], request.form['cost'], request.form['location'],
+                                            "Dcapodilupo")
+
+            for user_Input in information_For_Inventory_DB:
+                if user_Input:
+                    pass
+                else:
+                    return render_template("add_Inventory.html", error=True, data=information_For_Inventory_DB)
+
+
+            add_Inventory_Item(information_For_Inventory_DB)
+            return render_template("add_Inventory.html" ,success=True, data=information_For_Inventory_DB)
+
+        elif request.form['submit_button'] == 'Back To Main Menu':
             return redirect(url_for('main_Screen'))
 
     else:
@@ -107,4 +129,7 @@ def view_Letters():
 if __name__ == '__main__':
     from backend import programSetup
     programSetup()
+
+    current_User = ""
+
     app.run()
