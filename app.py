@@ -93,12 +93,13 @@ def remove_Inventory_Item():
 
 @app.route('/Send_Item_To_Job', methods=["POST","GET"])
 def send_Item_To_Job():
+    from backend import get_Current_Inventory_Database_Information
     if request.method == 'POST':
         if request.form['submit_button'] == 'Go Back':
             return redirect(url_for('main_Screen'))
 
     else:
-        return render_template("send_Item_To_Job.html")
+        return render_template("send_Item_To_Job.html", inventory_Data=get_Current_Inventory_Database_Information())
 
 
 @app.route('/Return_Item_From_Job', methods=["POST","GET"])

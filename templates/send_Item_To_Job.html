@@ -9,13 +9,36 @@
 <div class="main_Wrapper">
     <div class="company_Logo">
         <img src="../static/Company Logo.png" alt="Generic Demolition Company!">
-        <h1>Coming Soon!</h1>
     </div>
     <form action="{{ url_for('send_Item_To_Job') }}" method="POST">
 
-        <div class="">
+        <div class=Tools">
+            <label for="Tools">Tools:</label>
+            <select name="Tools">
+                {% for tool, tuple_Of_Information in inventory_Data.items(): %}
+                    <option name="{{ tool }}" value="{{ tuple_Of_Information[1]}}">{{ tool }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class=invoice_Number">
+            <label for="invoice_Number">Invoice Number:</label>
+            <input type="text" name="invoice_Number"><br><br>
+
+        </div>
+
+        <div class="client_Name">
+            <label for="client_Name">Client Name:</label>
+            <input type="text" name="client_Name"><br><br>
+
+        </div>
+
+
+
+        <div class="button_Wrapper">
                 <button type="submit" name="submit_button" value="Go Back">Go Back</button>
-            </div>
+        </div>
+
     </form>
 
 </div>
