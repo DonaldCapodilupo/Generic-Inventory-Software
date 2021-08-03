@@ -21,8 +21,6 @@ def login_Screen():
     else:
         return render_template("login.html")
 
-
-
 @app.route('/main', methods=["POST","GET"])
 def main_Screen():
     if request.method == 'POST':
@@ -42,8 +40,6 @@ def main_Screen():
 
     else:
         return render_template("main.html")
-
-
 
 @app.route('/Add_Inventory_Item', methods=["POST","GET"])
 def add_Inventory_Item():
@@ -66,7 +62,6 @@ def add_Inventory_Item():
             return redirect(url_for('main_Screen'))
     else:
         return render_template("add_Inventory.html")
-
 
 @app.route('/Remove_Inventory_Item', methods=["POST","GET"])
 def remove_Inventory_Item():
@@ -97,9 +92,8 @@ def send_Item_To_Job():
     if request.method == 'POST':
         if request.form['submit_button'] == 'Go Back':
             return redirect(url_for('main_Screen'))
-
     else:
-        return render_template("send_Item_To_Job.html", inventory_Data=get_Current_Inventory_Database_Information())
+        return render_template("send_Item_To_Job.html", inventory_Data=get_Current_Inventory_Database_Information(), invoice_Data={"Cat":"Meow"})
 
 
 @app.route('/Return_Item_From_Job', methods=["POST","GET"])
