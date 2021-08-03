@@ -3,45 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <title>Send Inventory Item</title>
-    <link rel="stylesheet" href="../static/send_Item_To_Job.css">
+    <link rel="stylesheet" href="../static/CSS/send_Item_To_Job.css">
+     <script src="../static/JS/send_Item_To_Job.js"></script>
 </head>
 <body>
 <div class="main_Wrapper">
     <div class="company_Logo">
-        <img src="../static/Company Logo.png" alt="Generic Demolition Company!">
+        <img src="../static/Images/Company%20Logo.png" alt="Generic Demolition Company!">
     </div>
-    <form action="{{ url_for('send_Item_To_Job') }}" method="POST">
 
-        <div class=Tools">
-            <label for="Tools">Tools:</label>
+    <h2>What is the invoice number?</h2>
+    <div class="invoice_Wrapper">
+        <div class="previous_Invoices_Wrapper">
+            <input type="radio" name="invoice_Radio_Buttons" id="Previous Invoice" value="Previous Invoice">
+            <label for="Previous Invoices">Previous Invoices:</label>
             <select name="Tools">
-                {% for tool, tuple_Of_Information in inventory_Data.items(): %}
-                    <option name="{{ tool }}" value="{{ tuple_Of_Information[1]}}">{{ tool }}</option>
+                {% for invoice, contractor in invoice_Data.items(): %}
+                    <option name="{{ invoice }}" value="{{ invoice}}">{{ invoice }} - {{ contractor }}</option>
                 {% endfor %}
             </select>
         </div>
-
-        <div class=invoice_Number">
-            <label for="invoice_Number">Invoice Number:</label>
-            <input type="text" name="invoice_Number"><br><br>
-
+        <div class="new_Invoices_Wrapper">
+            <input type="radio" name="invoice_Radio_Buttons" id="New Invoice" value="New Invoice">
+            <label for="new_Invoice">New Invoice Number:</label>
+            <input type="text" name="invoice_Number" id = "New Invoice Number"><br><br>
         </div>
+        <button onclick="check_Invoice_Type()" id="confirm_Invoice_Button">Confirm Invoice</button>
+    </div>
+    <div class="new_Invoice_Confirmation_Wrapper">
+        {% if success: %}
+            <div class="success_Message">
+                <h3>New invoice has been added.</h3>
+            </div>
+        {% endif %}
+    </div>
+    <div class="new_Invoice_Failed_Wrapper">
+    </div>
+    <div class="contractor_Wrapper">
+    </div>
+    <div class="new_Contractor_Confirmation_Wrapper">
+    </div>
+    <div class="new_Contractor_Failed_Wrapper">
+    </div>
+    <div class="user_Input_Wrapper">
+    </div>
+    <div class=Tools">
+        <label for="Tools">Tools:</label>
+        <select name="Tools">
+            {% for tool, tuple_Of_Information in inventory_Data.items(): %}
+                <option name="{{ tool }}" value="{{ tuple_Of_Information[1]}}">{{ tool }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class=invoice_Number">
+        <label for="invoice_Number">Invoice Number:</label>
+        <input type="text" name="invoice_Number"><br><br>
+    </div>
+    <div class="client_Name">
+        <label for="client_Name">Client Name:</label>
+        <input type="text" name="client_Name"><br><br>
+    </div>
 
-        <div class="client_Name">
-            <label for="client_Name">Client Name:</label>
-            <input type="text" name="client_Name"><br><br>
-
-        </div>
 
 
 
-        <div class="button_Wrapper">
-                <button type="submit" name="submit_button" value="Go Back">Go Back</button>
-        </div>
 
-    </form>
 
-</div>
+
+    </div>
 
 </body>
 </html>

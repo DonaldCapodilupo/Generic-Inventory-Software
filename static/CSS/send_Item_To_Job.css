@@ -1,0 +1,56 @@
+body{
+    background: lightblue;
+}
+
+.main_Wrapper{
+    display: grid;
+    grid-template-rows: 15% auto auto;
+
+}
+
+
+.company_Logo{
+    justify-self: center;
+}
+
+
+
+
+
+button{
+    margin: 20px;
+    background-color: #555555;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+
+
+
+form{
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-self: center;
+    max-height: 100%;
+}
+
+.invoice_Wrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.new_Invoice_Confirmation_Wrapper{
+    visibility: hidden;
+}
+
+.company_Logo{
+    display: grid;
+    max-height: 175px;
+}
+
+
+
