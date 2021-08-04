@@ -5,6 +5,7 @@ body{
 .main_Wrapper{
     display: grid;
     grid-template-rows: 15% auto auto;
+    justify-self: center;
 
 }
 
@@ -13,7 +14,28 @@ body{
     justify-self: center;
 }
 
+h2{
+    justify-self: center;
+}
 
+.invoice_Wrapper{
+    display: grid;
+    justify-self: center;
+
+}
+
+.contractor_Wrapper{
+    justify-self: center;
+}
+
+.previous_Contractor_Wrapper{
+    padding-bottom: 20px;
+}
+
+.final_Choice_Wrapper{
+    justify-self: center;
+
+}
 
 
 
@@ -23,9 +45,13 @@ button{
     border: none;
     color: white;
     padding: 15px 32px;
+    display: grid;
     text-align: center;
     text-decoration: none;
     font-size: 16px;
+    width: 300px;
+    justify-self: center;
+
 }
 
 
