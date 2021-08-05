@@ -13,107 +13,81 @@
     </div>
 
     <h2>What is the invoice number?</h2>
-    <div class="invoice_Wrapper">
-        <div class="previous_Invoices_Wrapper">
-            <input type="radio" name="invoice_Radio_Buttons" id="Previous Invoice" value="Previous Invoice">
-            <label for="Previous Invoices">Previous Invoices:</label>
-            <select name="Invoices">
-                {% for invoice, contractor in invoice_Data.items(): %}
-                    <option name="{{ invoice }}" value="{{ invoice}}">{{ invoice }} - {{ contractor }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="new_Invoices_Wrapper">
-            <input type="radio" name="invoice_Radio_Buttons" id="New Invoice" value="New Invoice">
-            <label for="new_Invoice">New Invoice Number:</label>
-            <input type="text" name="invoice_Number" id = "New Invoice Number"><br><br>
-        </div>
-    </div>
-    <button onclick="check_Invoice_Type()" id="confirm_Invoice_Button">Confirm Invoice</button>
-
-    <div class="new_Invoice_Confirmation_Wrapper">
-    </div>
-
-    <div class="new_Invoice_Failed_Wrapper">
-    </div>
-
-
-    <div class="contractor_Wrapper" style="display:none;" id = "New Contractor Wrapper">
-        <h2>New Invoice Detected</h2>
-
-        <div class="previous_Contractor_Wrapper">
-            <input type="radio" name="invoice_Radio_Button_Contractor" id="Previous Contractor" value="Previous Contractor">
-            <label for="Previous Contractors">Previous Contractors:</label>
-            <select name="Contractors">
-                {% for contractor in contractor_Data: %}
-                    <option name="{{ contractor }}" value="{{ contractor}}">{{ contractor }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div class="new_Contractor_Wrapper">
-            <input type="radio" name="invoice_Radio_Button_Contractor" id="New Contractor" value="New Contractor">
-            <label for="new_Contractor">New Contractor Name:</label>
-            <input type="text" name="contractor_Name" id="Contractor Name"><br><br>
+    <form action="{{ url_for('send_Item_To_Job') }}" method="POST">
+        <div class="invoice_Wrapper">
+            <div class="previous_Invoices_Wrapper">
+                <input type="radio" name="invoice_Radio_Buttons" id="Previous Invoice" value="Previous Invoice">
+                <label for="Previous Invoices">Previous Invoices:</label>
+                <select name="Invoices">
+                    {% for invoice, contractor in invoice_Data.items(): %}
+                        <option name="{{ invoice }}" value="{{ invoice}}">{{ invoice }} - {{ contractor }}</option>
+                    {% endfor %}
+                </select>
             </div>
-        <button onclick="verify_Contractor()" id="confirm_New_Contractor_Button">Confirm New Contractor</button>
-    </div>
+            <div class="new_Invoices_Wrapper">
+                <input type="radio" name="invoice_Radio_Buttons" id="New Invoice" value="New Invoice">
+                <label for="new_Invoice">New Invoice Number:</label>
+                <input type="text" name="invoice_Number" id = "New Invoice Number"><br><br>
+            </div>
+        </div>
 
-    <div class="new_Contractor_Confirmation_Wrapper">
-    </div>
-    <div class="new_Contractor_Failed_Wrapper">
-    </div>
-    <div class="user_Input_Wrapper">
-    </div>
+        <button type="button" onclick="check_Invoice_Type()" id="confirm_Invoice_Button">Confirm Invoice</button>
 
-    <div class="final_Choice_Wrapper" style="display: none" id="Final Choice Wrapper">
+        <div class="new_Invoice_Confirmation_Wrapper">
+        </div>
 
+        <div class="new_Invoice_Failed_Wrapper">
+        </div>
 
 
+        <div class="contractor_Wrapper" style="display:none;" id = "New Contractor Wrapper">
+            <h2>New Invoice Detected</h2>
+            <div class="previous_Contractor_Wrapper">
+                <input type="radio" name="invoice_Radio_Button_Contractor" id="Previous Contractor" value="Previous Contractor">
+                <label for="Previous Contractors">Previous Contractors:</label>
+                <select name="Contractors">
+                    {% for contractor in contractor_Data: %}
+                        <option name="{{ contractor }}" value="{{ contractor}}">{{ contractor }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <div class=current_Employees_Wrapper">
-            <input type="radio" name="employee_Radio_Button" id="Current Employee" value="Current Employee">
-            <label for="Employees">Current Employees:</label>
+            <div class="new_Contractor_Wrapper">
+                <input type="radio" name="invoice_Radio_Button_Contractor" id="New Contractor" value="New Contractor">
+                <label for="new_Contractor">New Contractor Name:</label>
+                <input type="text" name="contractor_Name" id="Contractor Name"><br><br>
+            </div>
+            <button type="button" onclick="verify_Contractor()" id="confirm_New_Contractor_Button">Confirm Contractor</button>
+        </div>
+
+        <div class="new_Contractor_Confirmation_Wrapper">
+        </div>
+        <div class="new_Contractor_Failed_Wrapper">
+        </div>
+
+
+        <div class="final_Choice_Wrapper" style="display: none" id="Final Choice Wrapper">
+            <div class=current_Employees_Wrapper">
+                <label for="Employees">Employees:</label>
+                <select name="Tools">
+                    {% for employee in employee_Data: %}c
+                        <option name="{{ employee }}" value="{{ employee}}">{{ employee }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class=Tools">
+            <label for="Tools">Tools:</label>
             <select name="Tools">
-                {% for employee in employee_Data: %}c
-                    <option name="{{ employee }}" value="{{ employee}}">{{ employee }}</option>
+                {% for tool, tuple_Of_Information in inventory_Data.items():%}
+                    <option name="{{ tool }}" value="{{ tuple_Of_Information[1]}}">{{ tool }}</option>
                 {% endfor %}
-        </select>
-
-        <div class="new_Employee_Wrapper">
-            <input type="radio" name="invoice_Radio_Button_Contractor" id="New Contractor" value="New Contractor">
-            <label for="new_Contractor">New Contractor Name:</label>
-            <input type="text" name="contractor_Name" id="Contractor Name"><br><br>
+            </select>
             </div>
-
-
-
-
-        <div class=Tools">
-        <label for="Tools">Tools:</label>
-        <select name="Tools">
-            {% for tool, tuple_Of_Information in inventory_Data.items(): %}
-                <option name="{{ tool }}" value="{{ tuple_Of_Information[1]}}">{{ tool }}</option>
-            {% endfor %}
-        </select>
-        <button onclick="verify_Contractor()" id="confirm_New_Contractor_Button">Confirm New Contractor</button>
-    </div>
-
-
-
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-    </div>
-
+            <div class="submit_Button_Wrapper">
+                <input type="submit" name="submit_button" value="Send Tool To Job">
+            </div>
+        </div>
+    </form>
+</div>
 </body>
 </html>

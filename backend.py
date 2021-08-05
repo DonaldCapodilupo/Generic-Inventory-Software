@@ -62,8 +62,7 @@ def programSetup():
             c.execute("CREATE TABLE Jobs (ID INTEGER PRIMARY KEY, "
                       "Date TEXT,"
                       "Invoice_Number TEXT,"
-                      "Client_Name TEXT, "
-                      "Team_Leader TEXT)")
+                      "Client_Name TEXT)")
         except sqlite3.OperationalError:
             print("Employee.db already exists.")
 
@@ -128,5 +127,19 @@ def remove_Inventory_Item(stock_ID):
     c = conn.cursor()
 
     c.execute("DELETE FROM Inventory where Stock_ID = ?", [stock_ID])
+    os.chdir('..')
+    conn.commit()
+
+
+def add_New_Job_Item(job_Information_Tuple):
+    import os
+    import sqlite3
+    os.chdir("Databases")
+
+
+
+    conn = sqlite3.connect("Jobs.db")
+    c = conn.cursor()
+    c.execute("INSERT INTO Jobs VALUES (NULL,?,?,?)",job_Information_Tuple)
     os.chdir('..')
     conn.commit()

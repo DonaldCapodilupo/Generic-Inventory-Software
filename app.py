@@ -90,8 +90,19 @@ def remove_Inventory_Item():
 def send_Item_To_Job():
     from backend import get_Current_Inventory_Database_Information
     if request.method == 'POST':
-        if request.form['submit_button'] == 'Go Back':
-            return redirect(url_for('main_Screen'))
+        if request.form['submit_button'] == 'Send Tool To Job':
+            if request.form['invoice_Radio_Buttons'] == "New Invoice":
+                import datetime
+                from backend import add_New_Job_Item
+                today = str(datetime.date.today())
+                inv_Number = request.form.getlist("invoice_Number")[0]
+                contractor_Name = request.form.getlist("invoice_Radio_Button_Contractor")[0]
+                add_New_Job_Item((today,inv_Number,contractor_Name))
+                return redirect(url_for("main_Screen"))
+
+
+        else:
+            pass
     else:
         return render_template("send_Item_To_Job.html", inventory_Data=get_Current_Inventory_Database_Information(), invoice_Data={"Cat":"Meow"})
 

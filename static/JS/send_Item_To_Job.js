@@ -39,4 +39,10 @@ function verify_Contractor(){
 
     }
 
+    else if (previous_Contractor_Choice.checked === true){
+        document.getElementById("Final Choice Wrapper").style.display = "block";
+    }
+
+
+
 }
