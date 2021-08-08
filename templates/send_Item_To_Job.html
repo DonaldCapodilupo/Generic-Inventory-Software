@@ -33,7 +33,9 @@
 
         <button type="button" onclick="check_Invoice_Type()" id="confirm_Invoice_Button">Confirm Invoice</button>
 
-        <div class="new_Invoice_Confirmation_Wrapper">
+        <div class="new_Invoice_Confirmation_Wrapper" style="display: none" id="New Invoice Confirmation Wrapper">
+            <h2>New Invoice Detected</h2>
+            <h3>Invoice Accepted</h3>
         </div>
 
         <div class="new_Invoice_Failed_Wrapper">
@@ -41,7 +43,6 @@
 
 
         <div class="contractor_Wrapper" style="display:none;" id = "New Contractor Wrapper">
-            <h2>New Invoice Detected</h2>
             <div class="previous_Contractor_Wrapper">
                 <input type="radio" name="invoice_Radio_Button_Contractor" id="Previous Contractor" value="Previous Contractor">
                 <label for="Previous Contractors">Previous Contractors:</label>
@@ -60,10 +61,13 @@
             <button type="button" onclick="verify_Contractor()" id="confirm_New_Contractor_Button">Confirm Contractor</button>
         </div>
 
-        <div class="new_Contractor_Confirmation_Wrapper">
+        <div class="new_Contractor_Confirmation_Wrapper" style="display: none" id="New Contractor Accepted">
+            <h2>New Contractor Detected</h2>
+            <h3>New Contractor Accepted</h3>
         </div>
         <div class="new_Contractor_Failed_Wrapper">
         </div>
+
 
 
         <div class="final_Choice_Wrapper" style="display: none" id="Final Choice Wrapper">
