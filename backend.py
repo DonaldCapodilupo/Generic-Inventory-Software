@@ -48,10 +48,7 @@ def programSetup():
         c = conn.cursor()
         try:
             c.execute("CREATE TABLE Employees (ID INTEGER PRIMARY KEY, "
-                      "Stock_ID TEXT,"
-                      "Date_Withdrawn TEXT, "
-                      "Employee_Name TEXT,"
-                      "Date_Returned TEXT)")
+                      "Employee_Name TEXT)")
         except sqlite3.OperationalError:
             print("Employee.db already exists.")
 
@@ -102,6 +99,52 @@ def get_Current_Inventory_Database_Information():
             returnDict[row[2]] = (row[1],row[4],row[7])
     os.chdir('..')
     return  returnDict
+
+
+def get_Current_Employee_Database_Information():
+    import os
+    import sqlite3
+    os.chdir("Databases")
+
+    returnList = []
+
+    conn = sqlite3.connect("Employee.db")
+    c = conn.cursor()
+    for row in c.execute("SELECT * FROM Employees ORDER BY ID"):
+            returnList.append(row[1])
+    os.chdir('..')
+    return  returnList
+
+def get_Current_Contractor_Database_Information():
+    import os
+    import sqlite3
+    os.chdir("Databases")
+
+    returnList = []
+
+    conn = sqlite3.connect("Jobs.db")
+    c = conn.cursor()
+    for row in c.execute("SELECT * FROM Jobs ORDER BY ID"):
+        if row[3]not in returnList:
+            returnList.append(row[3])
+    os.chdir('..')
+    return  returnList
+
+def get_Current_Invoice_Database_Information():
+    import os
+    import sqlite3
+    os.chdir("Databases")
+
+    returnList = []
+
+    conn = sqlite3.connect("Jobs.db")
+    c = conn.cursor()
+    for row in c.execute("SELECT * FROM Jobs ORDER BY ID"):
+        if row[3]not in returnList:
+            returnList.append(row[3])
+    os.chdir('..')
+    return  returnList
+
 
 
 def add_Inventory_Item(user_Information_Tuple):

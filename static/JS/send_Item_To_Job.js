@@ -6,6 +6,7 @@ function check_Invoice_Type(){
 
 
     if(new_Invoice_Choice.checked === true && new_Invoice_Number.value){
+        document.getElementById("New Invoice Confirmation Wrapper").style.display = "block";
         document.getElementById("New Contractor Wrapper").style.display = "block";
         document.getElementById("Final Choice Wrapper").style.display = "none";
     }
@@ -30,6 +31,7 @@ function verify_Contractor(){
 
 
     if(new_Contractor_Choice.checked === true && new_Contractor_Name.value){
+        document.getElementById("New Contractor Accepted").style.display = "block";
         document.getElementById("Final Choice Wrapper").style.display = "block";
 
     }

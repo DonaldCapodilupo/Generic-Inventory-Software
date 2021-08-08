@@ -85,7 +85,12 @@ form{
 }
 
 .new_Invoice_Confirmation_Wrapper{
-    visibility: hidden;
+    justify-self: center;
+
+}
+
+.new_Contractor_Confirmation_Wrapper{
+    justify-self: center;
 }
 
 .company_Logo{
