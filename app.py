@@ -88,29 +88,39 @@ def remove_Inventory_Item():
 
 @app.route('/Send_Item_To_Job', methods=["POST","GET"])
 def send_Item_To_Job():
-    from backend import get_Current_Inventory_Database_Information, get_Current_Employee_Database_Information, \
-        get_Current_Contractor_Database_Information
+    from backend import database_Retrieval_Tool
     if request.method == 'POST':
         if request.form['submit_button'] == 'Send Tool To Job':
-            if request.form['invoice_Radio_Buttons'] == "New Invoice":
-                import datetime
-                from backend import add_New_Job_Item
-                today = str(datetime.date.today())
-                inv_Number = request.form.getlist("invoice_Number")[0]
-                if request.form.getlist("invoice_Radio_Button_Contractor")[0] == "New Contractor":
-                    new_Contractor = request.form['contractor_Name']
-                    add_New_Job_Item((today,inv_Number,new_Contractor))
-                    return redirect(url_for("main_Screen"))
-            elif request.form['invoice_Radio_Buttons'] == "Current Invoice":
-                pass
+
+            user_Input = {"invoice_Radio_Buttons":request.form['invoice_Radio_Buttons'],
+                          "invoice_Number":"",
+                          "contractor_Name":"",
+                          "employee_Name":request.form['employee_Name'],
+                          "tool_ID":request.form['tool_ID']
+                          }
+
+            if user_Input["invoice_Radio_Buttons"] == "New Invoice":
+                user_Input["invoice_Number"] = request.form['invoice_Number']
+                user_Input["contractor_Name"] = request.form['contractor_Name']
+
+            else:
+                previous_Invoice_Information = request.form['invoice_Number'].split('|')
+                user_Input["invoice_Number"] = previous_Invoice_Information[0]
+                user_Input["contractor_Name"] = previous_Invoice_Information[1]
+
+
+            return redirect(url_for('main_Screen'))
 
 
         else:
             pass
     else:
-        return render_template("send_Item_To_Job.html", inventory_Data=get_Current_Inventory_Database_Information(),
-                               employee_Data= get_Current_Employee_Database_Information(),invoice_Data={"Cat":"Meow"},
-                               contractor_Data = get_Current_Contractor_Database_Information())
+
+        return render_template("send_Item_To_Job.html",
+                               inventory_Data=dict(zip(database_Retrieval_Tool("Inventory.db","Inventory","Tool"),database_Retrieval_Tool("Inventory.db","Inventory","Stock_ID"))) ,
+                               employee_Data= database_Retrieval_Tool("Employee.db","Employees","Employee_Name"),
+                               invoice_Data=dict(zip(database_Retrieval_Tool("Jobs.db","Jobs","Invoice_Number"),database_Retrieval_Tool("Jobs.db","Jobs","Client_Name"))) ,
+                               contractor_Data = database_Retrieval_Tool("Jobs.db","Jobs","Client_Name"))
 
 
 @app.route('/Return_Item_From_Job', methods=["POST","GET"])

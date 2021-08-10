@@ -146,6 +146,35 @@ def get_Current_Invoice_Database_Information():
     return  returnList
 
 
+def database_Retrieval_Tool(database, table_Name, desired_ReturnValues, allow_Duplicates=True):
+    import sqlite3
+    import os
+
+    os.chdir("Databases")
+
+    connection_To_Database = sqlite3.connect(database)
+    cursor_For_Table = connection_To_Database.cursor()
+
+
+    cursor_For_Table.execute(("PRAGMA table_info("+table_Name+")"))
+    column_Headers = [headers[1] for headers in cursor_For_Table.fetchall()]
+
+    desired_Column = column_Headers.index(desired_ReturnValues)
+
+    return_List = [row[desired_Column] for row in
+                   cursor_For_Table.execute("SELECT * FROM " + table_Name + " ORDER BY ID")]
+
+    if allow_Duplicates:
+        os.chdir("..")
+        return return_List
+
+    else:
+        return_List_No_Duplicates = []
+        [return_List_No_Duplicates.append(item) for item in return_List if item not in return_List_No_Duplicates]
+        os.chdir("..")
+        return return_List_No_Duplicates
+
+
 
 def add_Inventory_Item(user_Information_Tuple):
     import os

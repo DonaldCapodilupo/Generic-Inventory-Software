@@ -18,9 +18,9 @@
             <div class="previous_Invoices_Wrapper">
                 <input type="radio" name="invoice_Radio_Buttons" id="Previous Invoice" value="Previous Invoice">
                 <label for="Previous Invoices">Previous Invoices:</label>
-                <select name="Invoices">
+                <select name="invoice_Number">
                     {% for invoice, contractor in invoice_Data.items(): %}
-                        <option name="{{ invoice }}" value="{{ invoice}}">{{ invoice }} - {{ contractor }}</option>
+                        <option name="invoice_Number" value="{{ invoice}}|{{ contractor }}">{{ invoice }} - {{ contractor }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -46,9 +46,9 @@
             <div class="previous_Contractor_Wrapper">
                 <input type="radio" name="invoice_Radio_Button_Contractor" id="Previous Contractor" value="Previous Contractor">
                 <label for="Previous Contractors">Previous Contractors:</label>
-                <select name="Contractors">
+                <select name="contractor_Name">
                     {% for contractor in contractor_Data: %}
-                        <option name="{{ contractor }}" value="{{ contractor}}">{{ contractor }}</option>
+                        <option name="contractor_Name" value="{{ contractor}}">{{ contractor }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -73,17 +73,17 @@
         <div class="final_Choice_Wrapper" style="display: none" id="Final Choice Wrapper">
             <div class=current_Employees_Wrapper">
                 <label for="Employees">Employees:</label>
-                <select name="Tools">
+                <select name="employee_Name">
                     {% for employee in employee_Data: %}c
-                        <option name="{{ employee }}" value="{{ employee}}">{{ employee }}</option>
+                        <option name="employee_Name" value="{{ employee}}">{{ employee }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class=Tools">
             <label for="Tools">Tools:</label>
-            <select name="Tools">
-                {% for tool, tuple_Of_Information in inventory_Data.items():%}
-                    <option name="{{ tool }}" value="{{ tuple_Of_Information[1]}}">{{ tool }}</option>
+            <select name="tool_ID">
+                {% for tool, tool_ID in inventory_Data.items():%}
+                    <option name="tool_ID" value="{{ tool_ID}}">{{ tool }} - {{ tool_ID }}</option>
                 {% endfor %}
             </select>
             </div>
