@@ -43,6 +43,20 @@ def programSetup():
         except sqlite3.OperationalError:
             print("Inventory.db already exists.")
 
+    def create_Outstanding_Tools_Database():
+        conn = sqlite3.connect('Outstanding_Tools.db')
+        c = conn.cursor()
+        try:
+            c.execute("CREATE TABLE Outstanding_Tools (ID INTEGER PRIMARY KEY, "
+                      "Date TEXT,"
+                      "Invoice_Number TEXT,"
+                      "Client_Name TEXT,"
+                      "Tool_ID TEXT,"
+                      "Employee TEXT,"
+                      "Returned BOOLEAN)")
+        except sqlite3.OperationalError:
+            print("Outstanding_Tools.db already exists.")
+
     def create_Employee_Database():
         conn = sqlite3.connect('Employee.db')
         c = conn.cursor()
@@ -61,13 +75,14 @@ def programSetup():
                       "Invoice_Number TEXT,"
                       "Client_Name TEXT)")
         except sqlite3.OperationalError:
-            print("Employee.db already exists.")
+            print("Jobs.db already exists.")
 
 
     create_User_Database()
     create_Tool_Database()
     create_Employee_Database()
     create_Job_Database()
+    create_Outstanding_Tools_Database()
     os.chdir('..')
 
 
@@ -213,5 +228,17 @@ def add_New_Job_Item(job_Information_Tuple):
     conn = sqlite3.connect("Jobs.db")
     c = conn.cursor()
     c.execute("INSERT INTO Jobs VALUES (NULL,?,?,?)",job_Information_Tuple)
+    os.chdir('..')
+    conn.commit()
+
+
+def add_Outstanding_Tools_DB(job_Information_Tuple):
+    import os
+    import sqlite3
+    os.chdir("Databases")
+
+    conn = sqlite3.connect("Outstanding_Tools.db")
+    c = conn.cursor()
+    c.execute("INSERT INTO Outstanding_Tools VALUES (NULL,?,?,?,?,?,?)",job_Information_Tuple)
     os.chdir('..')
     conn.commit()

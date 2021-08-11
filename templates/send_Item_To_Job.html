@@ -20,14 +20,14 @@
                 <label for="Previous Invoices">Previous Invoices:</label>
                 <select name="invoice_Number">
                     {% for invoice, contractor in invoice_Data.items(): %}
-                        <option name="invoice_Number" value="{{ invoice}}|{{ contractor }}">{{ invoice }} - {{ contractor }}</option>
+                        <option name="invoice_Number_Current" value="{{ invoice}}|{{ contractor }}">{{ invoice }} - {{ contractor }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="new_Invoices_Wrapper">
                 <input type="radio" name="invoice_Radio_Buttons" id="New Invoice" value="New Invoice">
                 <label for="new_Invoice">New Invoice Number:</label>
-                <input type="text" name="invoice_Number" id = "New Invoice Number"><br><br>
+                <input type="text" name="invoice_Number_New" id = "New Invoice Number"><br><br>
             </div>
         </div>
 

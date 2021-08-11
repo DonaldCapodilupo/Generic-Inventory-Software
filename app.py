@@ -88,9 +88,11 @@ def remove_Inventory_Item():
 
 @app.route('/Send_Item_To_Job', methods=["POST","GET"])
 def send_Item_To_Job():
-    from backend import database_Retrieval_Tool
+    from backend import database_Retrieval_Tool, add_Outstanding_Tools_DB, remove_Inventory_Item, add_New_Job_Item
     if request.method == 'POST':
         if request.form['submit_button'] == 'Send Tool To Job':
+            import datetime
+            today = str(datetime.date.today())
 
             user_Input = {"invoice_Radio_Buttons":request.form['invoice_Radio_Buttons'],
                           "invoice_Number":"",
@@ -100,14 +102,24 @@ def send_Item_To_Job():
                           }
 
             if user_Input["invoice_Radio_Buttons"] == "New Invoice":
-                user_Input["invoice_Number"] = request.form['invoice_Number']
+                print(request.form['invoice_Number_New'])
+                user_Input["invoice_Number"] = request.form['invoice_Number_New']
                 user_Input["contractor_Name"] = request.form['contractor_Name']
+                add_New_Job_Item((today, user_Input["invoice_Number"], user_Input["contractor_Name"]))
+
+
+
 
             else:
-                previous_Invoice_Information = request.form['invoice_Number'].split('|')
+                previous_Invoice_Information = request.form['invoice_Number_Current'].split('|')
                 user_Input["invoice_Number"] = previous_Invoice_Information[0]
                 user_Input["contractor_Name"] = previous_Invoice_Information[1]
 
+            add_Outstanding_Tools_DB((today, user_Input["invoice_Number"], user_Input["contractor_Name"],
+                                      user_Input["tool_ID"], user_Input["employee_Name"], False))
+
+
+            remove_Inventory_Item(user_Input["tool_ID"])
 
             return redirect(url_for('main_Screen'))
 
@@ -152,10 +164,11 @@ def view_Letters():
     else:
         return render_template("view_Letters.html")
 
+from backend import programSetup
+programSetup()
 
 if __name__ == '__main__':
-    from backend import programSetup
-    programSetup()
+
 
     current_User = ""
 
