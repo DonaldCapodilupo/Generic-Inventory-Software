@@ -9,9 +9,41 @@
 <div class="main_Wrapper">
     <div class="company_Logo">
         <img src="../static/Images/Company%20Logo.png" alt="Generic Demolition Company!">
-        <h1>Coming Soon!</h1>
     </div>
     <form action="{{ url_for('return_Item_From_Job') }}" method="POST">
+
+        {% for invoice, list_OF_Tuples in outstanding_Tools.items() %}
+            <div class="{{ invoice }}_Div">
+                <h2>{{ invoice }} -- {{ list_OF_Tuples[0][0] }}</h2><!-- Invoice Number and Contractor -->
+                <div class="{{ invoice }}_Information">
+                     <table style="width:100%">
+                        <tr>
+                          <th>Employee</th>
+                          <th>Tool_Id</th>
+                          <th>Date</th>
+                        </tr>
+
+                        {% for tool_Outstanding in list_OF_Tuples %}
+                            <tr>
+                                 {% for tool_Outstanding_Info in tool_Outstanding[1:] %}
+                                    <td>{{ tool_Outstanding_Info }}</td>
+                                 {% endfor %}
+                            </tr>
+                        {% endfor %}
+
+
+                    </table>
+                </div>
+            </div>
+
+        {% endfor %}
+
+
+
+
+
+
+
 
         <div class="">
                 <button type="submit" name="submit_button" value="Go Back">Go Back</button>

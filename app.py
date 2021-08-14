@@ -142,7 +142,23 @@ def return_Item_From_Job():
             return redirect(url_for('main_Screen'))
 
     else:
-        return render_template("return_Item_From_Job.html")
+        from backend import database_Pandas
+        outstanding_Tools = database_Pandas("Databases/Outstanding_Tools.db", "Outstanding_Tools")
+
+        #main_Divs = dict(zip(outstanding_Tools["Invoice_Number"],outstanding_Tools["Client_Name"]))
+
+        invoice_Information = {}
+
+        for row in outstanding_Tools.values:
+            try:
+                invoice_Information[row[2]].append((row[3], row[5], row[4], row[1]))
+            except KeyError:
+                invoice_Information[row[2]] = [(row[3], row[5], row[4], row[1])]
+
+        print(invoice_Information)
+
+        return render_template("return_Item_From_Job.html",
+                               outstanding_Tools=invoice_Information,)
 
 
 @app.route('/View_Reports', methods=["POST","GET"])

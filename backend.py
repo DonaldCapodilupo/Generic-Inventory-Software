@@ -242,3 +242,28 @@ def add_Outstanding_Tools_DB(job_Information_Tuple):
     c.execute("INSERT INTO Outstanding_Tools VALUES (NULL,?,?,?,?,?,?)",job_Information_Tuple)
     os.chdir('..')
     conn.commit()
+
+
+def read_Outstanding_Tools_DB():
+    import os
+    import sqlite3
+    os.chdir("Databases")
+
+    returnDict = {}
+
+    conn = sqlite3.connect("Outstanding_Jobs.db")
+    c = conn.cursor()
+    for row in c.execute("SELECT * FROM Outstanding_Jobs ORDER BY ID"):
+        returnDict
+    os.chdir('..')
+    return returnList
+
+
+def database_Pandas(database, table):
+    import pandas as pd
+    import sqlite3
+
+    con = sqlite3.connect(database)
+    df = pd.read_sql_query("SELECT * from "+ table, con)
+    con.close()
+    return df
