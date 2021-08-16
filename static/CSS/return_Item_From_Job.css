@@ -21,8 +21,15 @@ button{
     justify-self: center;
 }
 
-form{
+form {
     display: grid;
     grid-template-columns: 1fr;
+    justify-self: center;
+    border: 5px solid black;
+    width: 900px;
+}
+
+table{
+    text-align: center;
     justify-self: center;
 }

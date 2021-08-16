@@ -104,14 +104,20 @@ def send_Item_To_Job():
             if user_Input["invoice_Radio_Buttons"] == "New Invoice":
                 print(request.form['invoice_Number_New'])
                 user_Input["invoice_Number"] = request.form['invoice_Number_New']
-                user_Input["contractor_Name"] = request.form['contractor_Name']
+
+                if request.form["invoice_Radio_Button_Contractor"] == "Previous Contractor":
+                    user_Input["contractor_Name"] = request.form['contractor_Name_Previous']
+                else:
+                    user_Input["contractor_Name"] = request.form['contractor_Name_New']
+
                 add_New_Job_Item((today, user_Input["invoice_Number"], user_Input["contractor_Name"]))
 
 
 
 
             else:
-                previous_Invoice_Information = request.form['invoice_Number_Current'].split('|')
+                print(request.form['invoice_Number'])
+                previous_Invoice_Information = request.form['invoice_Number'].split('|')
                 user_Input["invoice_Number"] = previous_Invoice_Information[0]
                 user_Input["contractor_Name"] = previous_Invoice_Information[1]
 
