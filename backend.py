@@ -77,193 +77,70 @@ def programSetup():
         except sqlite3.OperationalError:
             print("Jobs.db already exists.")
 
+    def create_Backup_Database():
+        conn = sqlite3.connect('Backup_Inventory.db')
+        c = conn.cursor()
+        try:
+            c.execute("CREATE TABLE Inventory (ID INTEGER PRIMARY KEY, "
+                      "Date TEXT, "
+                      "Tool TEXT,"
+                      "Tool_Type TEXT,"
+                      "Stock_ID TEXT,"
+                      "Cost TEXT,"
+                      "Location TEXT,"
+                      "User TEXT)")
+        except sqlite3.OperationalError:
+            print("Backup_Inventory.db already exists.")
+
 
     create_User_Database()
     create_Tool_Database()
     create_Employee_Database()
     create_Job_Database()
     create_Outstanding_Tools_Database()
+    create_Backup_Database()
     os.chdir('..')
 
-
-def get_Current_User_Database_Information():
+def create_Database_Row(database, table, tuple_Of_Values_To_Add):
     import os
     import sqlite3
     os.chdir("Databases")
 
-    returnDict = {}
-
-    conn = sqlite3.connect("Users.db")
+    conn = sqlite3.connect(database)
     c = conn.cursor()
-    for row in c.execute("SELECT * FROM Userlist ORDER BY Date"):
-            returnDict[row[2]] = row[3]
-    os.chdir('..')
-    return  returnDict
 
+    tuple_To_Database_Syntax = "?, " * (len(tuple_Of_Values_To_Add)-1)
 
-def get_Current_Inventory_Database_Information():
-    import os
-    import sqlite3
-    os.chdir("Databases")
-
-    returnDict = {}
-
-    conn = sqlite3.connect("Inventory.db")
-    c = conn.cursor()
-    for row in c.execute("SELECT * FROM Inventory ORDER BY Date"):
-            returnDict[row[2]] = (row[1],row[4],row[7])
-    os.chdir('..')
-    return  returnDict
-
-
-def get_Current_Employee_Database_Information():
-    import os
-    import sqlite3
-    os.chdir("Databases")
-
-    returnList = []
-
-    conn = sqlite3.connect("Employee.db")
-    c = conn.cursor()
-    for row in c.execute("SELECT * FROM Employees ORDER BY ID"):
-            returnList.append(row[1])
-    os.chdir('..')
-    return  returnList
-
-def get_Current_Contractor_Database_Information():
-    import os
-    import sqlite3
-    os.chdir("Databases")
-
-    returnList = []
-
-    conn = sqlite3.connect("Jobs.db")
-    c = conn.cursor()
-    for row in c.execute("SELECT * FROM Jobs ORDER BY ID"):
-        if row[3]not in returnList:
-            returnList.append(row[3])
-    os.chdir('..')
-    return  returnList
-
-def get_Current_Invoice_Database_Information():
-    import os
-    import sqlite3
-    os.chdir("Databases")
-
-    returnList = []
-
-    conn = sqlite3.connect("Jobs.db")
-    c = conn.cursor()
-    for row in c.execute("SELECT * FROM Jobs ORDER BY ID"):
-        if row[3]not in returnList:
-            returnList.append(row[3])
-    os.chdir('..')
-    return  returnList
-
-
-def database_Retrieval_Tool(database, table_Name, desired_ReturnValues, allow_Duplicates=True):
-    import sqlite3
-    import os
-
-    os.chdir("Databases")
-
-    connection_To_Database = sqlite3.connect(database)
-    cursor_For_Table = connection_To_Database.cursor()
-
-
-    cursor_For_Table.execute(("PRAGMA table_info("+table_Name+")"))
-    column_Headers = [headers[1] for headers in cursor_For_Table.fetchall()]
-
-    desired_Column = column_Headers.index(desired_ReturnValues)
-
-    return_List = [row[desired_Column] for row in
-                   cursor_For_Table.execute("SELECT * FROM " + table_Name + " ORDER BY ID")]
-
-    if allow_Duplicates:
-        os.chdir("..")
-        return return_List
-
-    else:
-        return_List_No_Duplicates = []
-        [return_List_No_Duplicates.append(item) for item in return_List if item not in return_List_No_Duplicates]
-        os.chdir("..")
-        return return_List_No_Duplicates
-
-
-
-def add_Inventory_Item(user_Information_Tuple):
-    import os
-    import sqlite3
-    os.chdir("Databases")
-
-
-
-    conn = sqlite3.connect("Inventory.db")
-    c = conn.cursor()
-    c.execute("INSERT INTO Inventory VALUES (NULL,?,?,?,?,?,?,?)",user_Information_Tuple)
+    c.execute("INSERT INTO "+table+" VALUES (NULL,"+tuple_To_Database_Syntax +"?)",tuple_Of_Values_To_Add)
     os.chdir('..')
     conn.commit()
 
-
-def remove_Inventory_Item(stock_ID):
-    import os
-    import sqlite3
-    os.chdir("Databases")
-
-    conn = sqlite3.connect("Inventory.db")
-    c = conn.cursor()
-
-    c.execute("DELETE FROM Inventory where Stock_ID = ?", [stock_ID])
-    os.chdir('..')
-    conn.commit()
-
-
-def add_New_Job_Item(job_Information_Tuple):
-    import os
-    import sqlite3
-    os.chdir("Databases")
-
-
-
-    conn = sqlite3.connect("Jobs.db")
-    c = conn.cursor()
-    c.execute("INSERT INTO Jobs VALUES (NULL,?,?,?)",job_Information_Tuple)
-    os.chdir('..')
-    conn.commit()
-
-
-def add_Outstanding_Tools_DB(job_Information_Tuple):
-    import os
-    import sqlite3
-    os.chdir("Databases")
-
-    conn = sqlite3.connect("Outstanding_Tools.db")
-    c = conn.cursor()
-    c.execute("INSERT INTO Outstanding_Tools VALUES (NULL,?,?,?,?,?,?)",job_Information_Tuple)
-    os.chdir('..')
-    conn.commit()
-
-
-def read_Outstanding_Tools_DB():
-    import os
-    import sqlite3
-    os.chdir("Databases")
-
-    returnDict = {}
-
-    conn = sqlite3.connect("Outstanding_Jobs.db")
-    c = conn.cursor()
-    for row in c.execute("SELECT * FROM Outstanding_Jobs ORDER BY ID"):
-        returnDict
-    os.chdir('..')
-    return returnList
-
-
-def database_Pandas(database, table):
+def read_Database(database, table):
     import pandas as pd
-    import sqlite3
+    import sqlite3, os
+
+    os.chdir("Databases")
 
     con = sqlite3.connect(database)
     df = pd.read_sql_query("SELECT * from "+ table, con)
     con.close()
+    os.chdir("..")
     return df
+
+def update_Database_Information():
+    pass
+
+def delete_Database_Row(database, table, value_To_Remove):
+    import os
+    import sqlite3
+    os.chdir("Databases")
+
+    conn = sqlite3.connect(database)
+    c = conn.cursor()
+
+    c.execute("DELETE FROM "+ table +" where Stock_ID = ?", [value_To_Remove])
+    os.chdir('..')
+    conn.commit()
+
+
+

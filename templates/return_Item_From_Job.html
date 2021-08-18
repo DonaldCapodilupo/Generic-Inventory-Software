@@ -25,7 +25,7 @@
                     </tr>
                     {% for tool_Outstanding in list_OF_Tuples %}
                         <tr>
-                            <td><input type="checkbox" id="{{ tool_Outstanding[2] }}" name="{{ tool_Outstanding[2] }}" value="{{ tool_Outstanding[2] }}"></td>
+                            <td><input type="checkbox" id="{{ tool_Outstanding[2] }}" name="id_Checkboxes" value="{{ tool_Outstanding[2] }}"></td>
                             {% for tool_Outstanding_Info in tool_Outstanding[1:] %}
                                 <td>{{ tool_Outstanding_Info }}</td>
                             {% endfor %}
@@ -34,6 +34,10 @@
                 </table>
             </div>
         {% endfor %}
+
+        <div class="">
+            <button type="submit" name="submit_button" value="Return Item From Job">Return Item From Job</button>
+        </div>
 
         <div class="">
             <button type="submit" name="submit_button" value="Go Back">Go Back</button>

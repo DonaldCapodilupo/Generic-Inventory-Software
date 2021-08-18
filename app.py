@@ -6,11 +6,15 @@ app = Flask(__name__)
 @app.route('/', methods=["POST","GET"])
 def login_Screen():
     if request.method == 'POST':
-        from backend import get_Current_User_Database_Information
+        from backend import read_Database
         username = request.form['username']
         password = request.form['password']
 
-        valid_Users = get_Current_User_Database_Information()
+        users_DB = read_Database("Users.db", "Userlist")
+
+
+
+        valid_Users = dict(zip(users_DB["Username"],users_DB["Password"]))
 
         for user, pwrd in valid_Users.items():
             if user == username and password == pwrd:
@@ -45,7 +49,7 @@ def main_Screen():
 def add_Inventory_Item():
     if request.method == 'POST':
         if request.form['submit_button'] == 'Add Item':
-            from backend import add_Inventory_Item
+            from backend import create_Database_Row
             import datetime
             today = str(datetime.date.today())
             information_For_Inventory_DB = (today,request.form['tool_Name'], request.form['Tools'],
@@ -56,7 +60,8 @@ def add_Inventory_Item():
                     pass
                 else:
                     return render_template("add_Inventory.html", error=True, data=information_For_Inventory_DB)
-            add_Inventory_Item(information_For_Inventory_DB)
+            create_Database_Row("Inventory.db","Inventory",information_For_Inventory_DB)
+
             return render_template("add_Inventory.html" ,success=True, data=information_For_Inventory_DB)
         elif request.form['submit_button'] == 'Back To Main Menu':
             return redirect(url_for('main_Screen'))
@@ -67,28 +72,28 @@ def add_Inventory_Item():
 def remove_Inventory_Item():
     if request.method == 'POST':
         if request.form['submit_button'] == 'Remove Item':
-            from backend import remove_Inventory_Item, get_Current_Inventory_Database_Information
+            from backend import delete_Database_Row, read_Database
             if request.form.getlist('checkbox'):
                 for item in  request.form.getlist('checkbox'):
                     remove_Inventory_Item(item)
 
-                return render_template("remove_Inventory_Item.html" ,inventory_Data=get_Current_Inventory_Database_Information(),
+                return render_template("remove_Inventory_Item.html" ,inventory_Data=read_Database("Inventory.db","Inventory"),
                                        success=True, data= request.form.getlist('checkbox'))
             else:
                 return render_template("remove_Inventory_Item.html",
-                                       inventory_Data=get_Current_Inventory_Database_Information(),
+                                       inventory_Data=read_Database("Inventory.db","Inventory"),
                                        error=True)
 
         elif request.form['submit_button'] == 'Go Back':
             return redirect(url_for('main_Screen'))
 
     else:
-        from backend import get_Current_Inventory_Database_Information
-        return render_template("remove_Inventory_Item.html",inventory_Data=get_Current_Inventory_Database_Information())
+        from backend import read_Database
+        return render_template("remove_Inventory_Item.html",inventory_Data=read_Database("Inventory.db","Inventory"))
 
 @app.route('/Send_Item_To_Job', methods=["POST","GET"])
 def send_Item_To_Job():
-    from backend import database_Retrieval_Tool, add_Outstanding_Tools_DB, remove_Inventory_Item, add_New_Job_Item
+    from backend import read_Database, create_Database_Row, delete_Database_Row
     if request.method == 'POST':
         if request.form['submit_button'] == 'Send Tool To Job':
             import datetime
@@ -102,7 +107,7 @@ def send_Item_To_Job():
                           }
 
             if user_Input["invoice_Radio_Buttons"] == "New Invoice":
-                print(request.form['invoice_Number_New'])
+
                 user_Input["invoice_Number"] = request.form['invoice_Number_New']
 
                 if request.form["invoice_Radio_Button_Contractor"] == "Previous Contractor":
@@ -110,22 +115,26 @@ def send_Item_To_Job():
                 else:
                     user_Input["contractor_Name"] = request.form['contractor_Name_New']
 
-                add_New_Job_Item((today, user_Input["invoice_Number"], user_Input["contractor_Name"]))
+                job_Information_Tuple = (today, user_Input["invoice_Number"], user_Input["contractor_Name"])
+
+                create_Database_Row("Jobs.db", "Jobs",job_Information_Tuple)
 
 
 
 
             else:
-                print(request.form['invoice_Number'])
                 previous_Invoice_Information = request.form['invoice_Number'].split('|')
                 user_Input["invoice_Number"] = previous_Invoice_Information[0]
                 user_Input["contractor_Name"] = previous_Invoice_Information[1]
 
-            add_Outstanding_Tools_DB((today, user_Input["invoice_Number"], user_Input["contractor_Name"],
-                                      user_Input["tool_ID"], user_Input["employee_Name"], False))
+
+            outstanding_Tool_Information_Tuple = (today, user_Input["invoice_Number"], user_Input["contractor_Name"],
+                                      user_Input["tool_ID"], user_Input["employee_Name"], False)
+
+            create_Database_Row("Outstanding_Tools.db","Outstanding_Tools", outstanding_Tool_Information_Tuple)
 
 
-            remove_Inventory_Item(user_Input["tool_ID"])
+            delete_Database_Row("Inventory.db","Inventory",user_Input["tool_ID"])
 
             return redirect(url_for('main_Screen'))
 
@@ -134,11 +143,26 @@ def send_Item_To_Job():
             pass
     else:
 
+        inventory_DB = read_Database("Inventory.db","Inventory")
+        jobs_DB = read_Database("Jobs.db", "Jobs")
+        employees_DB = read_Database("Employee.db", "Employees")
+
+
+        inventory_Info_Dict = dict(zip(inventory_DB["Tool"],inventory_DB["Stock_ID"]))
+
+        employee_Name_List = employees_DB["Employee_Name"]
+
+        invoice_Data_Dict = dict(zip(jobs_DB["Invoice_Number"],jobs_DB["Client_Name"]))
+
+        contractor_Name_List = jobs_DB["Client_Name"]
+
+
+
         return render_template("send_Item_To_Job.html",
-                               inventory_Data=dict(zip(database_Retrieval_Tool("Inventory.db","Inventory","Tool"),database_Retrieval_Tool("Inventory.db","Inventory","Stock_ID"))) ,
-                               employee_Data= database_Retrieval_Tool("Employee.db","Employees","Employee_Name"),
-                               invoice_Data=dict(zip(database_Retrieval_Tool("Jobs.db","Jobs","Invoice_Number"),database_Retrieval_Tool("Jobs.db","Jobs","Client_Name"))) ,
-                               contractor_Data = database_Retrieval_Tool("Jobs.db","Jobs","Client_Name"))
+                               inventory_Data=inventory_Info_Dict,
+                               employee_Data= employee_Name_List,
+                               invoice_Data=invoice_Data_Dict ,
+                               contractor_Data = contractor_Name_List)
 
 
 @app.route('/Return_Item_From_Job', methods=["POST","GET"])
@@ -146,10 +170,21 @@ def return_Item_From_Job():
     if request.method == 'POST':
         if request.form['submit_button'] == 'Go Back':
             return redirect(url_for('main_Screen'))
+        if request.form['submit_button'] == 'Return Item From Job':
+            from backend import delete_Database_Row
+            items_To_Return_To_Inventory = request.form.getlist('id_Checkboxes')
+
+            for tool_Returned in items_To_Return_To_Inventory:
+                delete_Database_Row("Outstanding_Tools.db","Outstanding_Tools.db", tool_Returned)
+                add_Inventory_Item()
+
+            return redirect(url_for('main_Screen'))
+
+
 
     else:
-        from backend import database_Pandas
-        outstanding_Tools = database_Pandas("Databases/Outstanding_Tools.db", "Outstanding_Tools")
+        from backend import read_Database
+        outstanding_Tools = read_Database("Databases/Outstanding_Tools.db", "Outstanding_Tools")
 
         #main_Divs = dict(zip(outstanding_Tools["Invoice_Number"],outstanding_Tools["Client_Name"]))
 
