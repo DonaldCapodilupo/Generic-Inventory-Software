@@ -61,6 +61,7 @@ def add_Inventory_Item():
                 else:
                     return render_template("add_Inventory.html", error=True, data=information_For_Inventory_DB)
             create_Database_Row("Inventory.db","Inventory",information_For_Inventory_DB)
+            create_Database_Row("Backup_Inventory.db", "Inventory", information_For_Inventory_DB)
 
             return render_template("add_Inventory.html" ,success=True, data=information_For_Inventory_DB)
         elif request.form['submit_button'] == 'Back To Main Menu':
@@ -73,15 +74,29 @@ def remove_Inventory_Item():
     if request.method == 'POST':
         if request.form['submit_button'] == 'Remove Item':
             from backend import delete_Database_Row, read_Database
+
             if request.form.getlist('checkbox'):
                 for item in  request.form.getlist('checkbox'):
-                    remove_Inventory_Item(item)
+                    delete_Database_Row("Inventory.db","Inventory",item)
 
-                return render_template("remove_Inventory_Item.html" ,inventory_Data=read_Database("Inventory.db","Inventory"),
+                    inv_Data = read_Database("Inventory.db", "Inventory")
+
+                    records = inv_Data.to_records(index=False)
+                    result = list(records)
+                    print(result)
+                    data_Zip = dict(zip(inv_Data["Tool"], result))
+
+                return render_template("remove_Inventory_Item.html" ,inventory_Data=data_Zip,
                                        success=True, data= request.form.getlist('checkbox'))
             else:
+                inv_Data = read_Database("Inventory.db", "Inventory")
+
+                records = inv_Data.to_records(index=False)
+                result = list(records)
+
+                data_Zip = dict(zip(inv_Data["Tool"], result))
                 return render_template("remove_Inventory_Item.html",
-                                       inventory_Data=read_Database("Inventory.db","Inventory"),
+                                       inventory_Data=data_Zip,
                                        error=True)
 
         elif request.form['submit_button'] == 'Go Back':
@@ -89,7 +104,15 @@ def remove_Inventory_Item():
 
     else:
         from backend import read_Database
-        return render_template("remove_Inventory_Item.html",inventory_Data=read_Database("Inventory.db","Inventory"))
+
+        inv_Data = read_Database("Inventory.db","Inventory")
+
+        records = inv_Data.to_records(index=False)
+        result = list(records)
+
+        data_Zip = dict(zip(inv_Data["Tool"],result))
+
+        return render_template("remove_Inventory_Item.html",inventory_Data=data_Zip)
 
 @app.route('/Send_Item_To_Job', methods=["POST","GET"])
 def send_Item_To_Job():
@@ -171,12 +194,27 @@ def return_Item_From_Job():
         if request.form['submit_button'] == 'Go Back':
             return redirect(url_for('main_Screen'))
         if request.form['submit_button'] == 'Return Item From Job':
-            from backend import delete_Database_Row
+            from backend import delete_Database_Row, read_Database, create_Database_Row
             items_To_Return_To_Inventory = request.form.getlist('id_Checkboxes')
 
+            backup_Dataframe = read_Database("Backup_Inventory.db", "Inventory")
+
+
+
+
+            cat = backup_Dataframe.loc[backup_Dataframe['Stock_ID'] == items_To_Return_To_Inventory[0]]
+            print(cat.values)
+            print(cat.Stock_ID)
+
+
+
             for tool_Returned in items_To_Return_To_Inventory:
-                delete_Database_Row("Outstanding_Tools.db","Outstanding_Tools.db", tool_Returned)
-                add_Inventory_Item()
+                delete_Database_Row("Outstanding_Tools.db","Outstanding_Tools", tool_Returned)
+
+                backup_Information = backup_Dataframe.loc[backup_Dataframe['Stock_ID'] ==tool_Returned]
+                print(backup_Information)
+                create_Database_Row("Inventory.db","Inventory", backup_Information.values[0][1:])
+
 
             return redirect(url_for('main_Screen'))
 
@@ -184,7 +222,7 @@ def return_Item_From_Job():
 
     else:
         from backend import read_Database
-        outstanding_Tools = read_Database("Databases/Outstanding_Tools.db", "Outstanding_Tools")
+        outstanding_Tools = read_Database("Outstanding_Tools.db", "Outstanding_Tools")
 
         #main_Divs = dict(zip(outstanding_Tools["Invoice_Number"],outstanding_Tools["Client_Name"]))
 

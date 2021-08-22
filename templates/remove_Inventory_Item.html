@@ -20,13 +20,13 @@
                 <th scope="col">Stock ID</th>
                 <th scope="col">Uploaded By</th>
             </tr>
-            {% for tool, tuple_Of_Information in inventory_Data.items(): %}
+            {% for tool, tuple_Of_Information in inventory_Data.items() %}
                 <tr>
                     <th scope="row">{{ tool }}</th>
-                    <td><code>{{ tuple_Of_Information[0] }}</code></td>
                     <td><code>{{ tuple_Of_Information[1] }}</code></td>
-                    <td><code>{{ tuple_Of_Information[2] }}</code></td>
-                    <td><input type="checkbox" name="checkbox" value="{{ tuple_Of_Information[1] }}"></td>
+                    <td><code>{{ tuple_Of_Information[4] }}</code></td>
+                    <td><code>{{ tuple_Of_Information[-1] }}</code></td>
+                    <td><input type="checkbox" name="checkbox" value="{{ tuple_Of_Information[4] }}"></td>
                 </tr>
             {% endfor %}
         </table>
@@ -35,14 +35,14 @@
             <button type="submit" name="submit_button" value="Go Back">Go Back</button>
         </div>
 
-        {% if success: %}
+        {% if success %}
                 <div class="success_Message">
-                    {% for tool in data: %}
+                    {% for tool in data %}
                         <h3>Success! {{tool}} has been removed</h3>
                     {% endfor %}
                 </div>
         {% endif %}
-        {% if error: %}
+        {% if an_Error %}
             <div class="success_Message">
                 <h3>Error: Please try again.</h3>
             </div>

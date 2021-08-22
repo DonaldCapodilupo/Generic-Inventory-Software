@@ -51,7 +51,7 @@ def programSetup():
                       "Date TEXT,"
                       "Invoice_Number TEXT,"
                       "Client_Name TEXT,"
-                      "Tool_ID TEXT,"
+                      "Stock_ID TEXT,"
                       "Employee TEXT,"
                       "Returned BOOLEAN)")
         except sqlite3.OperationalError:
@@ -142,5 +142,9 @@ def delete_Database_Row(database, table, value_To_Remove):
     os.chdir('..')
     conn.commit()
 
+
+def get_Backup_Inventory_Item_Based_On_Stock_ID(dataframe, stock_ID):
+
+    pass
 
 
